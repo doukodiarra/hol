@@ -5,12 +5,7 @@ pipeline {
     }
 
     stages {
-        stage('Hello') {
-            steps {
-                echo 'Hello World'
-                
-            }
-        }
+        
          stage('build') {
             steps {
                 echo 'Hello build'
@@ -19,15 +14,22 @@ pipeline {
                 sh 'mvn package'
             }
         }
-         stage('deploy') {
+         stage('test') {
             steps {
-                echo 'Hello deploy'
+                sh 'mvn test'
                 
             }
         }
-         stage('test') {
-            steps {
-                echo 'Hello test'
+        stage ('build and publish image') {
+      steps {
+        script {
+          checkout scm
+          docker.withRegistry('', 'dockerUserID') {
+          def customImage = docker.build("ddiarra2020/hol-pipeline:${env.BUILD_ID}")
+          customImage.push()
+          }
+    }
+
                 
             }
         }

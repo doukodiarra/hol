@@ -25,8 +25,10 @@ pipeline {
         script {
           checkout scm
           docker.withRegistry('', 'DockerRegistryID') {
-          def customImage = docker.build("ddiarra2020/hol-pipeline:${env.BUILD_ID}")
-          customImage.push()
+          def customImage = docker.build("ddiarra2020/hol-pipeline:${env.BUILD_ID}"
+          def customImage1 = docker.build("ddiarra2020/hol-pipeline")
+          customImage.push()                             
+          customImage1.push()
           }
     }
 
